@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0
+
+* Added `PlayerAct` helper and several utilities to `Player` model.
+
 ## 0.2.0
 
 * Added support for modals.

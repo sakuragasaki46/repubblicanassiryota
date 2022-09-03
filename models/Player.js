@@ -54,6 +54,65 @@ class Player extends Sequelize.Model {
       e? `-${e}`: ''
     ].join('');
   }
+
+  async touch () {
+    this.touched = new Date;
+    this.save();
+  }
+  
+  maxExperience() {
+    return this.level * 32 + 48;
+  }
+
+  addExperience(xp){
+    let newXp = this.experience + xp;
+    while (newXp > this.maxExperience()) {
+      newXp -= this.maxExperience()
+      this.level += 1;
+      this.levelUpReward();
+    }
+    this.experience = newXp;
+  }
+
+  addBalance(coins){
+    this.balance = BigInt(this.balance) + BigInt(coins);
+  }
+
+  levelUpReward(){
+    const levelUpCoins = this.level % 5 === 0? 10 + this.level * 1 : 0 ;
+    this.addBalance(levelUpCoins);
+
+    // TODO create alert
+  }
+
+  isBlacklisted() {
+    if (this.blacklisted_until !== null) {
+      return new Date(this.blacklisted_until) < new Date(); 
+    }
+    return false;
+  }
+
+  act (callback, endXpReward = 4) {
+    return With(new PlayerAct(this, endXpReward), callback);
+  }
+
+  static async findByInteraction (interaction){
+    const { author } = interaction;
+    const pl = await Player.findByPk(author.id);
+    if (!pl) {
+      return await Player.create({
+	id: author.id,
+	name: author.name
+      });
+    }
+
+    if (pl.name !== author.name) {
+      pl.name = author.name;
+      await pl.touch();
+    }
+    
+    return pl;
+  }
 }
 
 module.exports = function(sequelize, DataTypes) {
@@ -91,7 +150,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     balance: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       allowNull: false,
       defaultValue: 0
     },
