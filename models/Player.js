@@ -228,7 +228,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     touched: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      defaultValue: DataTypes.NOW
     },
     blacklisted_until: {
       type: DataTypes.DATE,
