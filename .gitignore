@@ -11,6 +11,7 @@
 config.json
 database.sqlite
 jukebox-config.json
+database/
 
 # javascript
 node_modules/

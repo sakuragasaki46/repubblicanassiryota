@@ -41,9 +41,9 @@ module.exports = {
     if (pl) {
       embed
 	.addFields(
-	  {name: 'Bilancio', value: money(pl.balance), inline: true}
-	  {name: 'Qualifica', `?`, inline: true}
-	  {name: 'Cittadinanza', `?`, inline: true});
+	  {name: 'Bilancio', value: money(pl.balance), inline: true},
+	  {name: 'Qualifica', value: `?`, inline: true},
+	  {name: 'Cittadinanza', value: `?`, inline: true});
     }
 
     return interaction.reply({
