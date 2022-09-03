@@ -11,11 +11,11 @@ module.exports = {
       o
 	.setName('user')
 	.setDescription('L’utente di cui mostrare le info.')
-	.setRequired(true)
+	.setRequired(false)
     )
   ,
   async execute (interaction) {
-    const user = interaction.options.getUser('user');
+    const user = interaction.options.getUser('user') || interaction.user;
     const member = interaction.guild.members.cache.get(user.id);
     const joinDiscord = `<t:${Math.floor(user.createdAt.getTime()/1000)}>`;
     const joinGuild = `<t:${Math.floor(member.joinedAt.getTime()/1000)}>`;

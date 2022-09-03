@@ -3,6 +3,8 @@
 ## 0.3.0
 
 * Added `PlayerAct` helper and several utilities to `Player` model.
+* Added `/daily` command.
+* Made user parameter optional in `/userinfo`.
 
 ## 0.2.0
 

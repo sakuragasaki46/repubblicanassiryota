@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const { pronoun_accusative } = require('../helpers/inclusion.js');
+const PlayerAct = require('../helpers/PlayerAct.js');
 
 class Player extends Sequelize.Model {
   age () {
@@ -92,22 +93,65 @@ class Player extends Sequelize.Model {
     return false;
   }
 
-  act (callback, endXpReward = 4) {
-    return With(new PlayerAct(this, endXpReward), callback);
+  async act (interaction, callback, endXpReward = 4) {
+    return await new PlayerAct(this, endXpReward).start(interaction, callback);
   }
 
-  static async findByInteraction (interaction){
-    const { author } = interaction;
-    const pl = await Player.findByPk(author.id);
+  collectDaily (){
+    const now = new Date;
+    const thenStreak = this.last_daily_streak;
+    let oldDailyStreak = null;
+    const nextDailyOn = Math.ceil(now / 86400000) * 86400000;
+    
+    if (thenStreak) {
+      const dayInterval = (
+	Math.floor(+now / 86400000) - Math.floor(+thenStreak / 86400000)
+      );
+
+      if (dayInterval > 1) {
+	oldDailyStreak = this.daily_streak;
+	this.daily_streak = 0;
+      } else if (dayInterval === 1) {
+	this.daily_streak += 1;
+      } else {
+	return {
+	  collected: false,
+	  nextDailyOn
+	};
+      }
+    } else {
+      this.daily_streak = 0;
+    }
+
+    const baseCoins = 10 + Math.floor(Math.random() * 6);
+    const streakCoins = 2 * this.daily_streak;
+    const totalCoins = baseCoins + streakCoins;
+
+    this.last_daily_streak = now;
+    this.addBalance(totalCoins);
+
+    return {
+      collected: true,
+      totalCoins,
+      baseCoins,
+      streakCoins,
+      curStreak: this.dailyStreak,
+      lostStreak: oldDailyStreak,
+      nextDailyOn
+    };
+  }
+  
+  static async findByDsUser (user){
+    const pl = await Player.findByPk(user.id);
     if (!pl) {
       return await Player.create({
-	id: author.id,
-	name: author.name
+	id: user.id,
+	name: user.name
       });
     }
 
-    if (pl.name !== author.name) {
-      pl.name = author.name;
+    if (pl.name !== user.name) {
+      pl.name = user.name;
       await pl.touch();
     }
     

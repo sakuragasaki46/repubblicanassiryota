@@ -4,19 +4,37 @@ class PlayerAct {
     this.endXpReward = endXpReward;
   }
   
-  enter (){
+  async start (interaction, callback){
     if (this.player.isBlacklisted()) {
-      throw new Error('Player is blacklisted');
+      await this.onBlacklisted(interaction);
+      return;
     }
 
-    return this.player;
+    let error = null;
+    try {
+      await callback(this.player);
+    } catch (e) {
+      error = e;
+    } finally {
+      if (!error) {
+	this.player.addExperience(this.endXpReward);
+	await this.player.touch();
+      }
+    }
+
+    if (error) {
+      throw error;
+    }
   }
 
-  exit (error) {
-    if (!error) {
-      this.player.addExperience(this.endXpReward);
-      await this.player.touch();
-    }
+  async onBlacklisted(interaction){
+    const embed = new MessageEmbed()
+	  .setTitle('Sei in lista nera!')
+	  .setDescription(`Non puoi usare comandi fino a <t:${new Date(player.blacklisted_until) / 1000}>`)
+    
+    await interaction.reply(
+      {embeds: [embed]}
+    );
   }
 };
 
