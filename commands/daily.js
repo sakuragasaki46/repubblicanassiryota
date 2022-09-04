@@ -28,6 +28,10 @@ module.exports = {
 	    `Hai ricevuto ${money(dailyInfo.totalCoins)}.\n\n` +
 	      `Il tuo prossimo giornaliero è pronto in <t:${dailyInfo.nextDailyOn/1000}>`
 	  )
+	  .addFields(
+	    {name: 'Monete base', value: money(dailyInfo.baseCoins), inline: true},
+	    {name: 'Bonus slancio', value: money(dailyInfo.streakCoins), inline: true}
+	  )
       } else {
 	embed 
 	  .setTitle('Nient’altro per te per oggi')

@@ -135,7 +135,7 @@ class Player extends Sequelize.Model {
       totalCoins,
       baseCoins,
       streakCoins,
-      curStreak: this.dailyStreak,
+      curStreak: this.daily_streak,
       lostStreak: oldDailyStreak,
       nextDailyOn
     };
