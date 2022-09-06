@@ -352,7 +352,7 @@ module.exports = {
       timestamps: false
     });
   }
-
+  ,
   async down () {
 
     await queryInterface.dropTable('bibbia');
