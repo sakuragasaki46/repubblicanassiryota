@@ -38,7 +38,7 @@ module.exports = {
       const otherUserId = interaction.customId.match(/partnership:(\d+)/)[1];
       const otherPl = await Player.findByDsUser({id: otherUserId});
 
-      if (!interaction.guild.members.cache.has(otherUser)){
+      if (!interaction.guild.members.cache.has(otherUserId)){
 	const embed = new MessageEmbed()
 	      .setTitle('Partnership non eseguita')
 	      .setDescription('L’utente non è in questo server.')
