@@ -123,7 +123,6 @@ module.exports = {
       }
     }, {
       transaction,
-      sequelize,
       tableName: 'tuppergroup',
       timestamps: false,
       indexes: [
@@ -226,7 +225,6 @@ module.exports = {
       }
     }, {
       transaction,
-      sequelize,
       modelName: 'tupper',
       tableName: 'tupper',
       timestamps: true,
@@ -309,7 +307,6 @@ module.exports = {
       }
     }, {
       transaction,
-      sequelize,
       tableName: 'useralert',
       timestamps: false,
       indexes: [
@@ -347,7 +344,6 @@ module.exports = {
       }
     }, {
       transaction,
-      sequelize,
       tableName: 'bibbia',
       timestamps: false
     });
