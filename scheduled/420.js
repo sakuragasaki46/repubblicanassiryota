@@ -1,7 +1,7 @@
 
 
 module.exports = {
-  time: {hour: [4, 16], minute: 20, tz: 'Europe/Rome'},
+  time: {hour: 4, minute: 20, tz: 'Europe/Rome'},
   async execute(client) {
     const channel = client.channels.cache.get('880805122710593617');
     if (channel) {

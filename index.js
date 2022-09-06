@@ -9,6 +9,7 @@ const { clientId, token } = require('./config.json');
 const client = new Client({
   intents: [
     Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_MESSAGES,
     Intents.FLAGS.GUILD_MEMBERS
   ],
 });
@@ -41,7 +42,7 @@ for (const file of commandFiles) {
 }
 
 client.modals = new Collection();
-const modalFiles = fs.readdirSync("./modals");
+const modalFiles = fs.readdirSync("./modals").filter(file => file.endsWith(".js"));
 
 for (const file of modalFiles) {
   const modal = require(`./modals/${file}`);
@@ -65,14 +66,14 @@ client.on("interactionCreate", async interaction => {
   } else if (interaction.isModalSubmit()) {
     const { customId } = interaction;
 
-    const modal = client.modals.get(customId);
+    const modal = client.modals.get(customId.split(':')[0]);
 
     try {
       await modal.execute(interaction);
     } catch (error) {
       console.error(error);
       await interaction.reply({
-	content: `Modale non riconosciuta!`,
+	content: `La modale è risultata in un errore.`,
 	ephemeral: true
       });
     }

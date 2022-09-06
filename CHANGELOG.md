@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0
+
+* Added `/guildconfig` and `/partnership`.
+* Introduced Migrations.
+* Added `GuildConfig` model.
+* Removed scheduled `420` in the afternoon.
+
 ## 0.3.0
 
 * Added `PlayerAct` helper and several utilities to `Player` model.

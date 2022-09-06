@@ -15,3 +15,4 @@ database/
 
 # javascript
 node_modules/
+config/

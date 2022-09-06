@@ -1,6 +1,11 @@
 const Sequelize = require('sequelize');
+
+class Tupper extends Sequelize.Model {
+  
+}
+
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('tupper', {
+  Tupper.init({
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -37,11 +42,13 @@ module.exports = function(sequelize, DataTypes) {
     },
     posts: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 0
     },
     show_brackets: {
       type: DataTypes.BOOLEAN,
-      allowNull: false
+      allowNull: false,
+      defaultValue: false
     },
     birthday: {
       type: DataTypes.DATEONLY,
@@ -65,18 +72,21 @@ module.exports = function(sequelize, DataTypes) {
     },
     group_pos: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 0
     },
     nick: {
       type: DataTypes.STRING(64),
-      allowNull: false
+      allowNull: true
     },
     privacy: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 0
     }
   }, {
     sequelize,
+    modelName: 'tupper',
     tableName: 'tupper',
     timestamps: true,
     indexes: [
@@ -140,4 +150,6 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
+
+  return Tupper;
 };
