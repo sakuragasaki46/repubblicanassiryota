@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1
+
+* Added `customPresence` config.
+
 ## 0.4.0
 
 * Added `/guildconfig` and `/partnership`.
