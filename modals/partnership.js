@@ -75,10 +75,10 @@ module.exports = {
       await messageSent.reply(
 	`
 ─────────────────
-◇ Eseguita da: ${interaction.user}
-◇ Eseguita dal server: ${interaction.guild.name}
-◇ Eseguita con: <@${otherUserId}>
-◇ Ping: ${partnershipPingStr}
+☼ Eseguita da: ${interaction.user}
+☼ Eseguita con: <@${otherUserId}>
+☼ Eseguita dal server: ${interaction.guild.name}
+☼ Ping: ${partnershipPingStr}
 ─────────────────`);
 
       pl.addBalance(5);

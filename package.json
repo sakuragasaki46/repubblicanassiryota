@@ -1,6 +1,6 @@
 {
   "name": "repubblicanassiryota",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Nassiryot Republic official discord bot",
   "private": true,
   "main": "index.js",
@@ -21,6 +21,7 @@
     "node-schedule": "^2.1.0",
     "sequelize": "^6.16.2",
     "sequelize-auto": "^0.8.8",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "yargs": "^17.5.1"
   }
 }
