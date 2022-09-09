@@ -8,7 +8,8 @@ module.exports = {
   data: {
     name: 'partnership',
   },
-  async execute(interaction) {
+  hasPlayer: true,
+  async execute(interaction, player) {
     const { partnershipChannel, partnershipRole, partnershipPing } = await GuildConfig.getVars(interaction.guild.id, ['partnershipChannel', 'partnershipRole', 'partnershipPing']);
 
     // check if partnershipChannel and partnershipRole are undefined
@@ -32,48 +33,46 @@ module.exports = {
       return;
     }
 
-    const pl = await Player.findByDsUser(interaction.user);
+    
+    const otherUserId = interaction.customId.match(/partnership:(\d+)/)[1];
+  const otherPl = await Player.findByDsUser({id: otherUserId});
 
-    await pl.act(interaction, async function(){
-      const otherUserId = interaction.customId.match(/partnership:(\d+)/)[1];
-      const otherPl = await Player.findByDsUser({id: otherUserId});
+  if (!interaction.guild.members.cache.has(otherUserId)){
+const embed = new MessageEmbed()
+    .setTitle('Partnership non eseguita')
+    .setDescription('L’utente non è in questo server.')
+    .setColor(0xcc3300);
 
-      if (!interaction.guild.members.cache.has(otherUserId)){
-	const embed = new MessageEmbed()
-	      .setTitle('Partnership non eseguita')
-	      .setDescription('L’utente non è in questo server.')
-	      .setColor(0xcc3300);
-	
-	await interaction.reply({
-	  embeds: [embed]
-	});
-      }
+await interaction.reply({
+embeds: [embed]
+});
+    }
 
-      await interaction.deferReply();
+    await interaction.deferReply();
 
-      let channel = interaction.client.channels.cache.get(partnershipChannel);
+    let channel = interaction.client.channels.cache.get(partnershipChannel);
 
-      if (!channel) {
-	// TODO do something to fetch the channel
-	
-	const embed = new MessageEmbed()
-	      .setTitle('Errore')
-	      .setDescription('Canale Partnership non trovato.')
-	      .setColor(0xcc3300)
-	
-	await interaction.editReply({
-	  embeds: [embed]
-	});
+    if (!channel) {
+// TODO do something to fetch the channel
 
-	return;
-      }
+const embed = new MessageEmbed()
+      .setTitle('Errore')
+      .setDescription('Canale Partnership non trovato.')
+      .setColor(0xcc3300)
 
-      const messageSent = await channel.send(sanitizeMentions(interaction.fields.getTextInputValue('description')));
+await interaction.editReply({
+  embeds: [embed]
+});
 
-      const partnershipPingStr = partnershipPing ? `<@&${partnershipPing}>` : 'nessuno';
-      
-      await messageSent.reply(
-	`
+return;
+    }
+
+    const messageSent = await channel.send(sanitizeMentions(interaction.fields.getTextInputValue('description')));
+
+    const partnershipPingStr = partnershipPing ? `<@&${partnershipPing}>` : 'nessuno';
+    
+    await messageSent.reply(
+`
 ─────────────────
 ☼ Eseguita da: ${interaction.user}
 ☼ Eseguita con: <@${otherUserId}>
@@ -81,21 +80,20 @@ module.exports = {
 ☼ Ping: ${partnershipPingStr}
 ─────────────────`);
 
-      pl.addBalance(5);
-      otherPl.addBalance(5);
+    player.addBalance(5);
+    otherPl.addBalance(5);
 
-      // TODO implement as single query
-      await pl.touch();
-      await otherPl.touch();
+    // TODO implement as single query
+    await player.touch();
+    await otherPl.touch();
 
-      const embed = new MessageEmbed()
-	    .setTitle('Partnership eseguita!')
-	    .setDescription(`Entrambi avete guadagnato ${money(5)}`)
-	    .setColor(0x339900);
-      
-      await interaction.editReply({
-	embeds: [embed]
-      });
+    const embed = new MessageEmbed()
+    .setTitle('Partnership eseguita!')
+    .setDescription(`Entrambi avete guadagnato ${money(5)}`)
+    .setColor(0x339900);
+    
+    await interaction.editReply({
+embeds: [embed]
     });
   }
 };

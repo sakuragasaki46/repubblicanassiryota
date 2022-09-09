@@ -1,10 +1,9 @@
 const { Client, Collection, Intents } = require("discord.js");
-const { SlashCommandsBuilder } = require("@discordjs/builders");
-const { REST } = require("@discordjs/rest");
-const { Routes } = require("discord-api-types/v9");
 const fs = require("fs");
 const schedule = require('node-schedule');
-const { clientId, token } = require('./config.json');
+const { token } = require('./config.json');
+const { Player } = require('./dbObjects.js');
+const checkBlacklist = require('./helpers/checkBlacklist.js');
 
 const client = new Client({
   intents: [
@@ -50,33 +49,44 @@ for (const file of modalFiles) {
 }
 
 client.on("interactionCreate", async interaction => {
+  let command, player;
+
+  // fetch command (or whatever)
   if (interaction.isCommand()) {
     const { commandName } = interaction;
-    const command = client.commands.get(commandName);
+    command = client.commands.get(commandName);
 
-    try {
-      await command.execute(interaction);
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
-	content: `Il comando **/${commandName}** è risultato in un errore.`,
-	ephemeral: true
-      });
-    }
   } else if (interaction.isModalSubmit()) {
     const { customId } = interaction;
 
-    const modal = client.modals.get(customId.split(':')[0]);
+    command = client.modals.get(customId.split(':')[0]);
+  }
 
-    try {
-      await modal.execute(interaction);
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({
-	content: `La modale è risultata in un errore.`,
-	ephemeral: true
-      });
+  if (!command) {
+    return; 
+  }
+
+  try {
+
+    // fetch player (if available)
+    if (command.hasPlayer) {
+      player = await Player.findByDsUser(interaction.user);
     }
+      
+    if (!player || !await checkBlacklist(interaction, player)){
+      await command.execute(interaction, player);
+
+      if (player) {
+        player.addExperience(4);
+        await player.touch();
+      } 
+    }
+  } catch (error) {
+    console.error(error);
+    await interaction.reply({
+	content: `L’interazione è risultata in un errore.`,
+	ephemeral: true
+    });
   }
 });
 

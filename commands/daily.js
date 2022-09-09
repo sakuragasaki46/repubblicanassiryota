@@ -8,37 +8,35 @@ module.exports = {
     .setName('daily')
     .setDescription('Ogni giorno puoi ricevere un’iniezione di monete')
   ,
-
-  async execute (interaction) {
-    const pl = await Player.findByDsUser(interaction.user);
-    await pl.act (interaction, async function() {
-      const dailyInfo = pl.collectDaily();
-      const embed = new MessageEmbed();
-      if (dailyInfo.collected) {
-	await pl.touch();
-
-	embed
-	  .setTitle(dailyInfo.curStreak > 0?
-		    `Slancio di **${dailyInfo.curStreak} giorni**!`:
-		    dailyInfo.lostStreak?
-		    `Oh no! Hai perso il tuo slancio di ${dailyInfo.lostStreak}`:
-		    'Benvenuto! Continua a eseguire /daily per ulteriori bonus!'
+  hasPlayer: true,
+  
+  async execute (interaction, pl) {
+    const dailyInfo = pl.collectDaily();
+    const embed = new MessageEmbed();
+    if (dailyInfo.collected) {
+      await pl.touch();
+      
+      embed
+	.setTitle(dailyInfo.curStreak > 0?
+		  `Slancio di **${dailyInfo.curStreak} giorni**!`:
+		  dailyInfo.lostStreak?
+		  `Oh no! Hai perso il tuo slancio di ${dailyInfo.lostStreak} giorni…`:
+		  'Benvenuto! Continua a eseguire /daily per ulteriori bonus!'
 		   )
 	  .setDescription(
 	    `Hai ricevuto ${money(dailyInfo.totalCoins)}.\n\n` +
 	      `Il tuo prossimo giornaliero è pronto in <t:${dailyInfo.nextDailyOn/1000}>`
 	  )
-	  .addFields(
-	    {name: 'Monete base', value: money(dailyInfo.baseCoins), inline: true},
-	    {name: 'Bonus slancio', value: money(dailyInfo.streakCoins), inline: true}
-	  )
-      } else {
-	embed 
-	  .setTitle('Nient’altro per te per oggi')
-	  .setDescription(`Il tuo prossimo giornaliero è pronto in <t:${Math.floor(dailyInfo.nextDailyOn/1000)}>`);
-      }
+	.addFields(
+	  {name: 'Monete base', value: money(dailyInfo.baseCoins), inline: true},
+	  {name: 'Bonus slancio', value: money(dailyInfo.streakCoins), inline: true}
+	)
+    } else {
+      embed 
+	.setTitle('Nient’altro per te per oggi')
+	.setDescription(`Il tuo prossimo giornaliero è pronto in <t:${Math.floor(dailyInfo.nextDailyOn/1000)}>`);
+    }
 
-      await interaction.reply({embeds: [embed]});
-    });
+    await interaction.reply({embeds: [embed]});
   }
 };

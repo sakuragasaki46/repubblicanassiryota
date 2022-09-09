@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 const { pronoun_accusative } = require('../helpers/inclusion.js');
-const PlayerAct = require('../helpers/PlayerAct.js');
 
 class Player extends Sequelize.Model {
   age () {
@@ -88,13 +87,9 @@ class Player extends Sequelize.Model {
 
   isBlacklisted() {
     if (this.blacklisted_until !== null) {
-      return new Date(this.blacklisted_until) < new Date(); 
+      return new Date(this.blacklisted_until) > new Date(); 
     }
     return false;
-  }
-
-  async act (interaction, callback, endXpReward = 4) {
-    return await new PlayerAct(this, endXpReward).start(interaction, callback);
   }
 
   collectDaily (){

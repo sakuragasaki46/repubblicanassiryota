@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0
+
+* Removed `PlayerAct` helper.  Added player info retrieving directly in index.js, and blacklist checking in `checkBlacklist` helper.
+* Refactored command and modal dispatching in index.js.
+* Introduced Scripts.  `blacklist.js` is the first one. (Since blacklisting is a delicate administrative operation, it has. in my opinion, be done via a server-side script, and not via regular slash commands.)
+
 ## 0.4.1
 
 * Added `customPresence` config.

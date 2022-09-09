@@ -14,6 +14,7 @@ module.exports = {
 	.setRequired(true)
     )
   ,
+  hasPlayer: true,
   async execute (interaction) {
 
     const { partnershipChannel, partnershipRole } = await GuildConfig.getVars(interaction.guild.id, ['partnershipChannel', 'partnershipRole']);
