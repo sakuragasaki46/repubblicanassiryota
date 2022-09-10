@@ -2,9 +2,14 @@
 
 ## 0.5.0
 
+* Added `/say` command.
 * Removed `PlayerAct` helper.  Added player info retrieving directly in index.js, and blacklist checking in `checkBlacklist` helper.
 * Refactored command and modal dispatching in index.js.
 * Introduced Scripts.  `blacklist.js` is the first one. (Since blacklisting is a delicate administrative operation, it has. in my opinion, be done via a server-side script, and not via regular slash commands.)
+* Introduced Autocompletes.
+* Updated README with instructions on how to deploy.
+* Moved database info from `config.json` to `config/config.json`.
+* Renamed `created_at` and `updated_at` columns of `Tupper` model in order to match Sequelize standards.
 
 ## 0.4.1
 

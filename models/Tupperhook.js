@@ -1,6 +1,10 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('tupperhook', {
+  class Tupperhook extends Sequelize.Model {
+    
+  }
+
+  Tupperhook.init({
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -26,6 +30,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     sequelize,
     tableName: 'tupperhook',
+    modelName: 'tupperhook',
     timestamps: false,
     indexes: [
       {
@@ -54,4 +59,6 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
+
+  return Tupperhook;
 };

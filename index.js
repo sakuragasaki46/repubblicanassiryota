@@ -48,6 +48,14 @@ for (const file of modalFiles) {
   client.modals.set(modal.data.name, modal)
 }
 
+client.autocompletes = new Collection();
+const autocompleteFiles = fs.readdirSync("./autocompletes").filter(file => file.endsWith(".js"));
+
+for (const file of autocompleteFiles) {
+  const autoc = require(`./autocompletes/${file}`);
+  client.autocompletes.set(autoc.data.name, autoc);
+}
+
 client.on("interactionCreate", async interaction => {
   let command, player;
 
@@ -60,6 +68,25 @@ client.on("interactionCreate", async interaction => {
     const { customId } = interaction;
 
     command = client.modals.get(customId.split(':')[0]);
+  } else if (interaction.isAutocomplete()){
+    const { commandName } = interaction;
+    const focusedOption = interaction.options.getFocused(true);
+
+    const command1 = client.commands.get(commandName);
+
+    if (!command1.autocomplete) {
+      return;
+    }
+
+    command = client.autocompletes.get(command1.autocomplete[focusedOption.name]);
+
+    // autocompletes require special handling
+
+    if (!command) return;
+
+    await command.execute(interaction, focusedOption.value);
+
+    return;
   }
 
   if (!command) {
@@ -83,10 +110,17 @@ client.on("interactionCreate", async interaction => {
     }
   } catch (error) {
     console.error(error);
-    await interaction.reply({
-	content: `L’interazione è risultata in un errore.`,
-	ephemeral: true
-    });
+    if (!interaction.deferred && !interaction.replied) {
+      await interaction.reply({
+	      content: `L’interazione è risultata in un errore.`,
+	      ephemeral: true
+      });
+    } else if (!interaction.replied) {
+      await interaction.editReply({
+        content: `L’interazione è risultata in un errore.`,
+	      ephemeral: true
+      });
+    }
   }
 });
 

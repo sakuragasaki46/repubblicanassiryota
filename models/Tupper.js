@@ -1,10 +1,28 @@
 const Sequelize = require('sequelize');
 
-class Tupper extends Sequelize.Model {
-  
-}
-
 module.exports = function(sequelize, DataTypes) {
+  class Tupper extends Sequelize.Model {
+    async getWebhook (channel){
+      if (typeof channel === 'object') {
+        channel = channel.id;
+      }
+      
+      await sequelize.models.tupperhook.upsert({
+        tupper_id: this.id,
+        channel
+      });
+
+      const tupperhook = await sequelize.models.tupperhook.findOne({
+        where: {
+          tupper_id: this.id,
+          channel
+        }
+      });
+
+      return tupperhook;
+    }
+  }
+
   Tupper.init({
     id: {
       autoIncrement: true,

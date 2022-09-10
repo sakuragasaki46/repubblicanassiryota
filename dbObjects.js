@@ -1,10 +1,11 @@
 const fs = require('fs');
 const Sequelize = require('sequelize');
-const { database } = require("./config.json");
+const nodeEnv = process.env.NODE_ENV || 'development';
+const dbConfig = require("./config/config.json")[nodeEnv];
 
-const sequelize = new Sequelize(database.name, database.user, database.password, {
-  host: database.host,
-  dialect: 'mysql',
+const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
+  host: dbConfig.host,
+  dialect: dbConfig.dialect,
   logging: false,
   supportBigNumbers: true,
   bigNumberStrings: true
