@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.0 (future)
+
+* Schema changes: remove column `url` from `Tupperhook` model, replaced by `webhook_id`.  In previous codebase (not published), it used to store strings like `<Webhook id=123456789012345678>`.  And I found out now.
+
+## 0.5.1
+
+* Fixed bug in `/say` command when retrieving existing Tupperhook from database.
+
 ## 0.5.0
 
 * Added `/say` command.

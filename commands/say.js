@@ -56,9 +56,10 @@ module.exports = {
         let wh;
 
         if (tupperhook.url) {
-            const urlMatch = tupperhook.url.match(/https:\/\/(?:[a-z0-9-]+\.)?discord\.com\/api\/webhooks\/(\d+)\/(.+)/);
-            const [id, token] = [urlMatch[1], urlMatch[2]];
-            wh = await interaction.client.fetchWebhook(id, token);
+            // tempfix, pure webhook ID will be stored in 0.6.0
+            const urlMatch = tupperhook.url.match(/<Webhook id=(\d+)>|https:\/\/discord.com\/api\/webhooks\/(\d+)\//);
+            const whId = urlMatch[1] || urlMatch[2];
+            wh = await interaction.client.fetchWebhook(whId);
         } else {
             wh = await interaction.channel.createWebhook(
                 'Tupperhook'
