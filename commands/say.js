@@ -32,7 +32,7 @@ module.exports = {
                 ephemeral: true
             });
 
-            return
+            return false;
         }
 
         const tupper = await Tupper.findOne({
@@ -47,7 +47,7 @@ module.exports = {
                 ephemeral: true
             });
 
-            return;
+            return false;
         }
 
         await interaction.deferReply();
@@ -55,11 +55,8 @@ module.exports = {
         const tupperhook = await tupper.getWebhook(channel);
         let wh;
 
-        if (tupperhook.url) {
-            // tempfix, pure webhook ID will be stored in 0.6.0
-            const urlMatch = tupperhook.url.match(/<Webhook id=(\d+)>|https:\/\/discord.com\/api\/webhooks\/(\d+)\//);
-            const whId = urlMatch[1] || urlMatch[2];
-            wh = await interaction.client.fetchWebhook(whId);
+        if (tupperhook.webhook_id) {
+            wh = await interaction.client.fetchWebhook(tupperhook.webhook_id);
         } else {
             try {
                 wh = await interaction.channel.createWebhook(
@@ -70,10 +67,10 @@ module.exports = {
                     content: 'Ehi! `_´ Non ho i permessi per i webhook. Chiedi a un amministratore di darmeli.',
                 });
 
-                return;
+                return false;
             }
 
-            tupperhook.url = wh.url;
+            tupperhook.webhook_id = wh.id;
             await tupperhook.save();
         }
 

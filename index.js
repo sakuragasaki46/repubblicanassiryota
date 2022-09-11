@@ -101,9 +101,9 @@ client.on("interactionCreate", async interaction => {
     }
       
     if (!player || !await checkBlacklist(interaction, player)){
-      await command.execute(interaction, player);
+      const result = await command.execute(interaction, player);
 
-      if (player) {
+      if (player && result !== false) {
         player.addExperience(4);
         await player.touch();
       } 

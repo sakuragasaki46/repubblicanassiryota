@@ -59,7 +59,7 @@ module.exports = {
 	ephemeral: true
       });
       
-      return;
+      return false;
     }
     
     if (interaction.options.getSubcommand() === 'set') {

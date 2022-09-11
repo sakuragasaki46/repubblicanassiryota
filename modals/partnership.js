@@ -14,7 +14,7 @@ module.exports = {
 
     // check if partnershipChannel and partnershipRole are undefined
     if (!await ensureGuildConfig(interaction, { partnershipChannel, partnershipRole })){
-      return;
+      return false;
     }
 
     if (!interaction.member.roles.cache.has(partnershipRole) || !interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
@@ -30,7 +30,7 @@ module.exports = {
 	ephemeral: true
       });
       
-      return;
+      return false;
     }
 
     
@@ -53,18 +53,18 @@ embeds: [embed]
     let channel = interaction.client.channels.cache.get(partnershipChannel);
 
     if (!channel) {
-// TODO do something to fetch the channel
+      // TODO do something to fetch the channel
 
-const embed = new MessageEmbed()
-      .setTitle('Errore')
-      .setDescription('Canale Partnership non trovato.')
-      .setColor(0xcc3300)
+      const embed = new MessageEmbed()
+            .setTitle('Errore')
+            .setDescription('Canale Partnership non trovato.')
+            .setColor(0xcc3300)
 
-await interaction.editReply({
-  embeds: [embed]
-});
+      await interaction.editReply({
+        embeds: [embed]
+      });
 
-return;
+      return false;
     }
 
     const messageSent = await channel.send(sanitizeMentions(interaction.fields.getTextInputValue('description')));

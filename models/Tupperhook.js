@@ -23,8 +23,8 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.BIGINT,
       allowNull: false
     },
-    url: {
-      type: DataTypes.STRING(1024),
+    webhook_id: {
+      type: DataTypes.BIGINT,
       allowNull: true
     }
   }, {

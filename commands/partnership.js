@@ -21,7 +21,7 @@ module.exports = {
 
     // check if partnershipChannel and partnershipRole are undefined
     if (!await ensureGuildConfig(interaction, { partnershipChannel, partnershipRole })){
-      return;
+      return false;
     }
 
     if (!interaction.member.roles.cache.has(partnershipRole) || !interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
@@ -37,7 +37,7 @@ module.exports = {
 	ephemeral: true
       });
       
-      return;
+      return false;
     }
 
     const otherUser = interaction.options.getUser('user');
