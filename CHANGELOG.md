@@ -3,6 +3,7 @@
 ## 0.7.0
 
 * Added `/citizenship` command mock.
+* Introduced user verification at join, i.e. `guildMemberJoin` event.
 
 ## 0.6.0
 
