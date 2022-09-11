@@ -83,6 +83,9 @@ module.exports = {
             avatarURL: tupper.avatar_url
         });
 
+        tupper.posts += 1;
+        await tupper.save();
+
         await interaction.deleteReply();
     }
 }
