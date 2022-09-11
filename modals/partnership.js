@@ -1,3 +1,9 @@
+/**
+ * (c) 2022 Sakuragasaki46
+ * 
+ * See LICENSE for license details
+ */
+
 const { MessageEmbed, Permissions } = require('discord.js');
 const { Player, GuildConfig } = require('../dbObjects.js');
 const ensureGuildConfig = require('../helpers/ensureGuildConfig.js');

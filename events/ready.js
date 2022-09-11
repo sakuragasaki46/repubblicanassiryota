@@ -1,3 +1,9 @@
+/**
+ * (c) 2022 Sakuragasaki46
+ * 
+ * See LICENSE for license details
+ */
+
 const { Users } = require("../dbObjects.js");
 const { customStatus, customPresence } = require('../config.json');
 

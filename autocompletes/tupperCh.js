@@ -1,3 +1,9 @@
+/**
+ * (c) 2022 Sakuragasaki46
+ * 
+ * See LICENSE for license details
+ */
+
 const { Op } = require('sequelize');
 const { Tupper } = require('../dbObjects.js');
 

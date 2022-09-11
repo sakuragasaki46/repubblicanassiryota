@@ -1,3 +1,9 @@
+/**
+ * (c) 2022 Sakuragasaki46
+ * 
+ * See LICENSE for license details
+ */
+
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed, Permissions, Modal, MessageActionRow, TextInputComponent } = require('discord.js');
 const { GuildConfig } = require('../dbObjects.js');

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.0
+
+* Added `/citizenship` command mock.
+
 ## 0.6.0
 
 * Added `/bibbia` command.

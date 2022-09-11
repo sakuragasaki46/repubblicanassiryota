@@ -1,3 +1,9 @@
+/**
+ * (c) 2022 Sakuragasaki46
+ * 
+ * See LICENSE for license details
+ */
+
 const fs = require('fs');
 const Sequelize = require('sequelize');
 const nodeEnv = process.env.NODE_ENV || 'development';

@@ -1,3 +1,9 @@
+/**
+ * (c) 2022 Sakuragasaki46
+ * 
+ * See LICENSE for license details
+ */
+
 const PRONOUN_ACCUSATIVE = {
   'he': 'him',
   'she': 'her',

@@ -1,3 +1,9 @@
+/**
+ * (c) 2022 Sakuragasaki46
+ * 
+ * See LICENSE for license details
+ */
+
 const { Client, Collection, Intents } = require("discord.js");
 const fs = require("fs");
 const schedule = require('node-schedule');

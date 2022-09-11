@@ -1,3 +1,9 @@
+/**
+ * (c) 2022 Sakuragasaki46
+ * 
+ * See LICENSE for license details
+ */
+
 const yargs = require('yargs');
 const { Player } = require('../dbObjects.js');
 const timeNumbers = require('../helpers/timeNumbers.js');

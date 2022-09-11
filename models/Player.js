@@ -1,3 +1,9 @@
+/**
+ * (c) 2022 Sakuragasaki46
+ * 
+ * See LICENSE for license details
+ */
+
 const Sequelize = require('sequelize');
 const { pronoun_accusative } = require('../helpers/inclusion.js');
 

@@ -1,3 +1,9 @@
+/**
+ * (c) 2022 Sakuragasaki46
+ * 
+ * See LICENSE for license details
+ */
+
 module.exports = {
     range (start, stop, step = 1) {
         const a = [];

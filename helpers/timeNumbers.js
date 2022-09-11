@@ -1,3 +1,9 @@
+/**
+ * (c) 2022 Sakuragasaki46
+ * 
+ * See LICENSE for license details
+ */
+
 module.exports = function(s){
   const matchObj = s.match(/(\d+(?:\.\d*)?)(s|m|h|d|w|mo|y)/i);
   

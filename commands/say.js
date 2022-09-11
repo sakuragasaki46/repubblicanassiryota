@@ -1,3 +1,9 @@
+/**
+ * (c) 2022 Sakuragasaki46
+ * 
+ * See LICENSE for license details
+ */
+
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { Tupper, Tupperhook } = require('../dbObjects.js');
 

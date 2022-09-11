@@ -1,3 +1,9 @@
+/**
+ * (c) 2022 Sakuragasaki46
+ * 
+ * See LICENSE for license details
+ */
+
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
 const { range, letterRange } = require('../helpers/range.js');
