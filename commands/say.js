@@ -63,6 +63,8 @@ module.exports = {
                     'Tupperhook'
                 );
             } catch (e) {
+                console.error(e);
+                
                 await interaction.editReply({
                     content: 'Ehi! `_´ Non ho i permessi per i webhook. Chiedi a un amministratore di darmeli.',
                 });

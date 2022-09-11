@@ -5,6 +5,8 @@
 * Added `/bibbia` command.
 * Schema changes: remove column `url` from `Tupperhook` model, replaced by `webhook_id`.  (In previous codebase, not published, it used to store strings like `<Webhook id=123456789012345678>`.  And I found out now.)
 * Now commands that fail have to return false in function body.  This way, commands that have failed do not give experience to player.
+* Now you can type ! at the end of the tupperCh autocomplete to match exactly the entered string.
+* `/say` uses the same webhook for each channel.  Previously, it used to create one *for each tupper*.  It could easily get past the 10 webhook limit per channel.  Please upgrade.
 
 ## 0.5.1
 

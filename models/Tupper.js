@@ -6,18 +6,19 @@ module.exports = function(sequelize, DataTypes) {
       if (typeof channel === 'object') {
         channel = channel.id;
       }
-      
-      await sequelize.models.tupperhook.upsert({
-        tupper_id: this.id,
-        channel
-      });
 
-      const tupperhook = await sequelize.models.tupperhook.findOne({
+      let tupperhook = await sequelize.models.tupperhook.findOne({
         where: {
-          tupper_id: this.id,
           channel
         }
       });
+
+      if (!tupperhook){
+        tupperhook = await sequelize.models.tupperhook.create({
+          tupper_id: this.id,
+          channel
+        });
+      }
 
       return tupperhook;
     }
