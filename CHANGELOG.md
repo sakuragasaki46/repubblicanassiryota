@@ -7,6 +7,7 @@
 ## 0.5.1
 
 * Fixed bug in `/say` command when retrieving existing Tupperhook from database.
+* Now `/say` catches the error when not having permissions for webhooks.
 
 ## 0.5.0
 

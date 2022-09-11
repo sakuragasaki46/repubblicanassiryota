@@ -61,9 +61,17 @@ module.exports = {
             const whId = urlMatch[1] || urlMatch[2];
             wh = await interaction.client.fetchWebhook(whId);
         } else {
-            wh = await interaction.channel.createWebhook(
-                'Tupperhook'
-            );
+            try {
+                wh = await interaction.channel.createWebhook(
+                    'Tupperhook'
+                );
+            } catch (e) {
+                await interaction.editReply({
+                    content: 'Ehi! `_´ Non ho i permessi per i webhook. Chiedi a un amministratore di darmeli.',
+                });
+
+                return;
+            }
 
             tupperhook.url = wh.url;
             await tupperhook.save();
