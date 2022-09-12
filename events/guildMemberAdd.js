@@ -4,11 +4,11 @@
  * See LICENSE for license details
  */
 
-const verifyUser = require('../helpers/verifyUser.js');
+const { inviteVerify } = require('../helpers/customs.js');
 
 module.exports = {
     name: "guildMemberAdd",
     async execute(member) {
-        return verifyUser(member);
+        return inviteVerify(member);
     }
 }

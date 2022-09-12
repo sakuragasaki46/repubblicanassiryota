@@ -3,7 +3,9 @@
 ## 0.7.0
 
 * Added `/citizenship` command mock.
-* Introduced user verification at join, i.e. `guildMemberAdd` event.
+* Added `GuildCountry`, `GuildCitizen` and `GuildParty` models.
+* Introduced user verification at join, i.e. `guildMemberAdd` event — also known as “customs”.
+
 
 ## 0.6.0
 
