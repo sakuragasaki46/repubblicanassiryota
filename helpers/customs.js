@@ -4,6 +4,7 @@
  * See LICENSE for license details
  */
 
+const wait = require('node:timers/promises').setTimeout;
 const { MessageActionRow, MessageButton, MessageEmbed, Message } = require('discord.js');
 const { GuildConfig, Player, GuildCitizen, GuildCountry } = require('../dbObjects.js');
 const ensureGuildConfig = require('../helpers/ensureGuildConfig.js');
