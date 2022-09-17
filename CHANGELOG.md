@@ -4,6 +4,7 @@
 
 * Changed bot description in package.json and README.md.
 * Bug fixes in verification process.
+* Completed code for age verification.
 
 ## 0.7.0
 
