@@ -148,12 +148,12 @@ module.exports = function(sequelize, DataTypes) {
       if (!pl) {
         return await Player.create({
     id: user.id,
-    name: user.name
+    name: user.username
         });
       }
   
-      if (pl.name !== user.name) {
-        pl.name = user.name;
+      if (pl.name !== user.username) {
+        pl.name = user.username;
         await pl.touch();
       }
       

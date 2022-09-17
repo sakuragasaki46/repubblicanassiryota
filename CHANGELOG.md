@@ -5,6 +5,7 @@
 * Changed bot description in package.json and README.md.
 * Bug fixes in verification process.
 * Completed code for age verification.
+* Fixed bug where player’s username was not stored.
 
 ## 0.7.0
 
