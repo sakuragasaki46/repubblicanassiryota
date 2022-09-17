@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.1
+
+* Changed bot description in package.json and README.md.
+
 ## 0.7.0
 
 * **Schema changes**: be sure to run the migrations before deployment.
