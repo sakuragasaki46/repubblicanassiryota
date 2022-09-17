@@ -5,6 +5,9 @@
  */
 
 const wait = require('node:timers/promises').setTimeout;
+const { GuildConfig, GuildCitizen } = require('../dbObjects.js')
+const { MessageEmbed } = require('discord.js');
+const { reassignRoles } = require('../helpers/customs.js');
 
 module.exports = {
     data: {
@@ -12,7 +15,9 @@ module.exports = {
     },
     hasPlayer: true,
     async execute (interaction, player) {
-        player.birthday = new Date();
+        const dateText = interaction.fields.getTextInputValue('date');
+
+        player.birthday = new Date(dateText);
         await player.touch();
 
         const minimumAge = await GuildConfig.getVar(interaction.guild.id, 'minimumAge', 13);
@@ -42,10 +47,28 @@ module.exports = {
             return false;
         }
 
-        let citizen = GuildCitizen.upsert({
-            player_id: player.id,
-            guild_id: interaction.guild.id
-        });
+
+        let citizen;
+        try {
+            citizen = GuildCitizen.create({
+                player_id: player.id,
+                guild_id: interaction.guild.id
+            });
+        } catch (ex) {
+            citizen = await GuildCitizen.findOne({
+                where: {
+                    player_id: player.id,
+                    guild_id: interaction.guild.id
+                }
+            })
+
+            await interaction.reply({
+                content: `Sei già cittadino/a ${(await citizen.getCitizenName()).toLocaleLowerCase()}!`,
+                ephemeral: true
+            });
+
+            return false;
+        }
         
         // reassign roles
         
