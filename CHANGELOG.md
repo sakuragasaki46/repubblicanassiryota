@@ -3,6 +3,7 @@
 ## 0.7.1
 
 * Changed bot description in package.json and README.md.
+* Bug fixes in verification process.
 
 ## 0.7.0
 

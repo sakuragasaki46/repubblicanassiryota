@@ -7,7 +7,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const { Player } = require('../dbObjects.js');
-const { getRankName } = require('../helpers/citizen.js');
 const money = require('../helpers/money.js');
 
 module.exports = {
@@ -55,7 +54,7 @@ module.exports = {
     embed
 	.addFields(
     {name: 'Cittadino da', value: `<t:${Math.floor(citizen.citizen_since / 1000)}>`, inline: true},
-	  {name: 'Qualifica', value: `${citizen.getRankName()}`, inline: true},
+	  {name: 'Qualifica', value: `${await citizen.getRankName()}`, inline: true},
 	  );
     }
 

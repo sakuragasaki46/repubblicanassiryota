@@ -122,7 +122,7 @@ module.exports = {
             await interaction.reply({
                 embeds: [embed]
             });
-
+            
             return;
         }
 
@@ -131,7 +131,17 @@ module.exports = {
                 content: '**Quanti anni hai?** Inserisci la tua età vera.',
                 components: [
                     new MessageActionRow()
-                    .addComponent
+                    .addComponents(
+                        new MessageButton()
+                        .setCustomId('verifymyage:u18')
+                        .setLabel('Meno di 18')
+                        .setStyle('SECONDARY')
+                        ,
+                        new MessageButton()
+                        .setCustomId('verifymyage:18p')
+                        .setLabel('Più di 18')
+                        .setStyle('SECONDARY')
+                    )
                 ]
             });
 
@@ -149,6 +159,14 @@ module.exports = {
                 embeds: [embed]
             });
             
+            await wait(30000);
+
+            try{
+                await member.kick({
+                    reason: 'Failed age verification'
+                })
+            } catch (ex) {}
+
             return false;
         }
 

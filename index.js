@@ -67,7 +67,7 @@ const buttonFiles = fs.readdirSync('./buttons').filter(file => file.endsWith('.j
 
 for (const file of buttonFiles) {
   const button = require(`./buttons/${file}`);
-  client.autocompletes.set(button.data.name, button);
+  client.buttons.set(button.data.name, button);
 }
 
 client.on("interactionCreate", async interaction => {
@@ -84,7 +84,7 @@ client.on("interactionCreate", async interaction => {
     command = client.modals.get(customId.split(':')[0]);
   } else if (interaction.isButton()){
     const { customId } = interaction;
-
+    
     command = client.buttons.get(customId.split(':')[0]);
   } else if (interaction.isAutocomplete()){
     const { commandName } = interaction;

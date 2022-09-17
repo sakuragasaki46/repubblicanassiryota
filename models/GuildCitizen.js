@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         async getRankName(){
             const country = await this.getCountry();
 
-            if (country.governor_id === this.id){
+            if (country.governor_id === this.player_id){
                 return getGovernorName(country.government_type);
             } else {
                 return getRankName(this.rank);
