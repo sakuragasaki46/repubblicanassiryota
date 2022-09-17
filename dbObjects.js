@@ -35,6 +35,8 @@ try {
   models.Tupper.hasMany(models.Tupperhook, { as: "tupperhooks", foreignKey: "tupper_id"});
   models.Tupper.belongsTo(models.TupperGroup, { as: "group", foreignKey: "group_id"});
   models.TupperGroup.hasMany(models.Tupper, { as: "tuppers", foreignKey: "group_id"});
+  models.GuildCitizen.belongsTo(models.GuildCountry, { as: "country", foreignKey: 'guild_id' });
+  models.GuildCountry.hasMany(models.GuildCitizen, { as: 'citizens', foreignKey: 'guild_id' });
 } catch(ex) {
   console.error(ex);
 }

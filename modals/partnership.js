@@ -32,7 +32,7 @@ module.exports = {
 	    );
 
       await interaction.reply({
-	embeds,
+	embeds: [embed],
 	ephemeral: true
       });
       

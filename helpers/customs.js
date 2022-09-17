@@ -4,12 +4,32 @@
  * See LICENSE for license details
  */
 
-const { MessageActionRow, MessageButton } = require('discord.js');
-const { GuildConfig } = require('../dbObjects.js');
+const { MessageActionRow, MessageButton, MessageEmbed, Message } = require('discord.js');
+const { GuildConfig, Player, GuildCitizen, GuildCountry } = require('../dbObjects.js');
+const ensureGuildConfig = require('../helpers/ensureGuildConfig.js');
+
+async function reassignRoles(member, citizen, interaction){
+    const {
+        customsRole, citizenRole
+    } = await GuildConfig.getVars(member.guild.id,
+        [ 'customsRole', 'citizenRole' ]
+    );
+
+    try {
+        await member.roles.remove(customsRole);
+        await member.roles.add(citizenRole);
+    } catch (ex) {
+        await interaction.reply({
+            content: `Impossibile assegnare i ruoli.`
+        });
+
+        return false;
+    }
+}
 
 module.exports = {
     async inviteVerify(member) {
-        const { customsChannel, customsRole, botRole } = GuildConfig.getVars(
+        const { customsChannel, customsRole, botRole } = await GuildConfig.getVars(
             member.guild.id,
             [ 'customsChannel', 'customsRole', 'botRole' ]
         );
@@ -19,6 +39,13 @@ module.exports = {
         }
 
         if (customsRole && !member.bot) {
+            const player = await Player.findByDsUser(member);
+            const citizen = await player.getCitizen(member.guild.id);
+
+            if (citizen) {
+                return reassignRoles(member, citizen, interaction);
+            }
+
             await member.roles.add(customsRole);
 
             if (customsChannel){
@@ -34,12 +61,113 @@ module.exports = {
                     )
                 ];
 
-                channel.send({
-                    content: `Benvenuto in **${member.guild.name}**!\n` +
+                await channel.send({
+                    content: `${member.user}, benvenuto in **${member.guild.name}**!\n` +
                     `Clicca sul bottone per iniziare il processo di verifica.`,
                     components: rows
                 });
             }
+        }
+    },
+
+    reassignRoles,
+
+    async applyCitizenship (interaction, player){
+        const { citizenRole, customsRole } = await GuildConfig.getVars(
+            interaction.guild.id,
+            [ 'citizenRole', 'customsRole' ]
+        );
+
+        if (!await ensureGuildConfig(interaction, { citizenRole, customsRole })){
+            return false;
+        }
+
+        const country = GuildCountry.findByPk(interaction.guild.id);
+
+        if (!country) {
+            await interaction.reply({
+                content: 'Errore! Chiedi a un amministratore di eseguire /setup.'
+            })
+        }
+
+        let citizen = await player.getCitizen(interaction.guild.id);
+
+        if (citizen) {
+            await interaction.reply({
+                content: `Sei già cittadino/a ${(await citizen.getCitizenName()).toLocaleLowerCase()}!`,
+                ephemeral: true
+            });
+
+            return false;
+        } 
+
+        // check the age of the account and the player
+        const accountAge = interaction.user.createdAt;
+        const minimumAge = await GuildConfig.getVar(interaction.guild.id, 'minimumAge', 13);
+        const member = interaction.guild.members.cache.get(player.id);
+        const playerAge = player.age();
+
+        if (new Date() - accountAge < (7 * 24 * 60 * 60 * 1000)){
+            const embed = new MessageEmbed();
+
+            embed
+                .setTitle('La tua verifica è stata sospesa')
+                .setDescription(
+                    `La verifica è stata sospesa in quanto il tuo account è troppo giovane. ` +
+                    `Un Addetto alla dogana ti verificherà manualmente al più presto.`
+                )
+                .setColor(0xeecc00)
+                ;
+            
+            await interaction.reply({
+                embeds: [embed]
+            });
+
+            return;
+        }
+
+        if (playerAge == null) {
+            await interaction.reply({
+                content: '**Quanti anni hai?** Inserisci la tua età vera.',
+                components: [
+                    new MessageActionRow()
+                    .addComponent
+                ]
+            });
+
+            return false;
+        }
+
+        if (playerAge < minimumAge) {
+            const embed = new MessageEmbed();
+            embed
+                .setTitle('Errore')
+                .setDescription(`Non hai l’età minima (${minimumAge} anni) per stare su questo server.`)
+                .setColor(0x660099);
+
+            await interaction.reply({
+                embeds: [embed]
+            });
+            
+            return false;
+        }
+
+        // create citizen
+
+        citizen = GuildCitizen.create({
+            player_id: player.id,
+            guild_id: interaction.guild.id
+        });
+        
+        // reassign roles
+        if (reassignRoles(member, citizen, interaction) !== false){
+            const embed = new MessageEmbed();
+
+            embed.setTitle('Completato!')
+                .setDescription(`Complimenti, ora sei un vero e proprio cittadino ${(await citizen.getCitizenName()).toLocaleLowerCase()}`)
+                .setColor(0x339900)
+
+            interaction.reply({embeds: [embed]});
         }
     }
 };

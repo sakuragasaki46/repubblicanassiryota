@@ -8,7 +8,14 @@ const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
     class GuildCitizen extends Sequelize.Model {
-        
+
+        async getCountry(){
+            return await sequelize.models.guildcountry.findByPk(this.guild_id);
+        }
+
+        async getCitizenName(){
+            return (await this.getCountry()).citizen_name;
+        }
     }
 
     GuildCitizen.init({

@@ -2,8 +2,13 @@
 
 ## 0.7.0
 
-* Added `/citizenship` command mock.
+* **Schema changes**: be sure to run the migrations before deployment.
+* Added `/guildinfo` command.
+* Added `/citizenship` command: it includes utility for pronouns.
+* Added `/setup` command, for guild administrators only.
+* Improved `/userinfo` with addition of rank and citizenship info, and `/partnership` with guild ranking.
 * Added `GuildCountry`, `GuildCitizen` and `GuildParty` models.
+* Added buttons handling.
 * Introduced user verification at join, i.e. `guildMemberAdd` event — also known as “customs”.
 
 

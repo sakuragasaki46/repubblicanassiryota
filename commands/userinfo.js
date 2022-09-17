@@ -27,6 +27,7 @@ module.exports = {
     const joinGuild = `<t:${Math.floor(member.joinedAt.getTime()/1000)}>`;
     const pl = await Player.findByPk(user.id);
     const pl_age = pl && pl.age();
+    const citizen = pl && await pl.getCitizen(interaction.guild.id);
 
     const embed = new MessageEmbed()
 	  .setTitle(`Info: ${user.tag}`)
@@ -40,16 +41,21 @@ module.exports = {
 	  .addFields(
 	    {name: 'ID', value: `${user.id}`, inline: true},
 	    {name: 'Presente su Discord da', value: `${joinDiscord}`, inline: true},
-	    {name:'Cittadino Nassiryota da', value:`${joinGuild}`, inline:true})
+	    {name: 'Nel server da', value:`${joinGuild}`, inline:true})
 	  .setThumbnail(user.avatarUrl)
 	  .setTimestamp(new Date);
 
     if (pl) {
       embed
 	.addFields(
-	  {name: 'Bilancio', value: money(pl.balance), inline: true},
-	  {name: 'Qualifica', value: `?`, inline: true},
-	  {name: 'Cittadinanza', value: `?`, inline: true});
+	  {name: 'Bilancio', value: money(pl.balance), inline: true});
+  }
+  if (citizen){
+    embed
+	.addFields(
+    {name: 'Cittadino da', value: `<t:${Math.floor(citizen.citizen_since / 1000)}>`, inline: true},
+	  {name: 'Qualifica', value: `${citizen.rank}`, inline: true},
+	  );
     }
 
     return interaction.reply({

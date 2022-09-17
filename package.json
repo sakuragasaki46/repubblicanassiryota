@@ -15,7 +15,7 @@
     "@discordjs/voice": "^0.8.0",
     "contextlib": "^1.2.0",
     "discord-api-types": "^0.27.2",
-    "discord.js": "^13.10.3",
+    "discord.js": "13.10",
     "moment": "^2.29.3",
     "mysql2": "^2.3.3",
     "node-schedule": "^2.1.0",

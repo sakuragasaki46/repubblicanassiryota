@@ -51,6 +51,7 @@ module.exports = {
 	    .setRequired(true)
 	)
     )
+	//.setDefaultMemberPermissions(Permissions.FLAGS.MANAGE_GUILD)
   ,
   async execute (interaction) {
 

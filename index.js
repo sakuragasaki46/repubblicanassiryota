@@ -62,6 +62,14 @@ for (const file of autocompleteFiles) {
   client.autocompletes.set(autoc.data.name, autoc);
 }
 
+client.buttons = new Collection();
+const buttonFiles = fs.readdirSync('./buttons').filter(file => file.endsWith('.js'));
+
+for (const file of buttonFiles) {
+  const button = require(`./buttons/${file}`);
+  client.autocompletes.set(button.data.name, button);
+}
+
 client.on("interactionCreate", async interaction => {
   let command, player;
 
@@ -74,6 +82,10 @@ client.on("interactionCreate", async interaction => {
     const { customId } = interaction;
 
     command = client.modals.get(customId.split(':')[0]);
+  } else if (interaction.isButton()){
+    const { customId } = interaction;
+
+    command = client.buttons.get(customId.split(':')[0]);
   } else if (interaction.isAutocomplete()){
     const { commandName } = interaction;
     const focusedOption = interaction.options.getFocused(true);
