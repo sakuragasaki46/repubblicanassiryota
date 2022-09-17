@@ -55,7 +55,7 @@ module.exports = {
     .addFields([
         {name: 'ID', value: `${guildId}`, inline: true},
         {name: 'Forma di governo', value: `${GOVERNMENT_TYPES[guildCountry.government_type] || '?'}`, inline: true},
-        {name: 'Leader', value: `${guildCountry.governor_id ? guildCountry.governor : 'Sconosciuto'}`, inline: true}
+        {name: 'Leader', value: `${guildCountry.governor_id ? `<@${guildCountry.governor_id}>` : 'Sconosciuto'}`, inline: true}
     ]);
 
     await interaction.reply({

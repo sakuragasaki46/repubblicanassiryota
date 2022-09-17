@@ -23,6 +23,23 @@ module.exports = {
       return false;
     }
 
+    // don’t interfere with SkyForce Unity
+    if (interaction.guild.members.cache.get('866289649878171658')){
+      const embed = new MessageEmbed()
+	    .setTitle('Modulo Partnership disattivato!')
+	    .setColor(0x660099)
+	    .setDescription(
+	      `Abbiamo rilevato la presenza del bot **SkyForce Unity** dentro questo server.\n` +
+        `Esegui le Partnership usando quel bot.  Altrimenti, espelli SkyForce Unity e riprova.`
+	    );
+
+      await interaction.reply({
+        embeds: [embed]
+      });
+
+      return false;
+    }
+
     if (!interaction.member.roles.cache.has(partnershipRole) || !interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) {
       const embed = new MessageEmbed()
 	    .setTitle('Attenzione!')
