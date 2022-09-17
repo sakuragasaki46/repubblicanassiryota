@@ -5,6 +5,7 @@
  */
 
 const Sequelize = require('sequelize');
+const { getGovernorName, getRankName } = require('../helpers/citizen.js');
 
 module.exports = (sequelize, DataTypes) => {
     class GuildCitizen extends Sequelize.Model {
@@ -15,6 +16,16 @@ module.exports = (sequelize, DataTypes) => {
 
         async getCitizenName(){
             return (await this.getCountry()).citizen_name;
+        }
+
+        async getRankName(){
+            const country = await this.getCountry();
+
+            if (country.governor_id === this.id){
+                return getGovernorName(country.government_type);
+            } else {
+                return getRankName(this.rank);
+            }
         }
     }
 
