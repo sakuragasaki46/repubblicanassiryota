@@ -1,5 +1,7 @@
 # Repubblica Nassiryota
 
+**Development stopped permanently on October 25, 2022 following the ban of my Discord account. I am not reviving the bot.**
+
 This bot, born as the official one of *Repubblica Nassiryota* Discord server, is a multipurpose bot for the management of virtual States on Discord.
 
 The features included are: partnerships, customs, parties (coming soon), and many others coming soon.
